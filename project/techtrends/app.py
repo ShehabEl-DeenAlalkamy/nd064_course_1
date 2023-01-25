@@ -3,6 +3,7 @@ import sqlite3
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 import subprocess
+import logging
 
 DATABASE_FILE = 'database.db'
 PORT = '3111'
@@ -46,7 +47,6 @@ def get_db_connection_count():
         app.logger.error(f"Error: process exceeded {TIMEOUT}")
         db_connection_count = -1
     except sqlite3.OperationalError as e:
-        p2.kill()
         app.logger.error(f"Error: {e}")
         db_connection_count = -1
     return db_connection_count
@@ -92,13 +92,16 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
+        app.logger.info(f"Article with id \"{post_id}\" is not found!")
         return render_template('404.html'), 404
     else:
+        app.logger.info(f"Article \"{post['title']}\" retrieved!")
         return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
+    app.logger.info("About page retrieved!")
     return render_template('about.html')
 
 # Define the post creation functionality
@@ -117,6 +120,7 @@ def create():
             connection.commit()
             connection.close()
 
+            app.logger.info(f"New Article \"{title}\" created!")
             return redirect(url_for('index'))
 
     return render_template('create.html')
@@ -134,17 +138,22 @@ def healthz():
     res = dict()
     status_code = 200
     try:
+        app.logger.debug("Openning test database connection")
         conn = sqlite3.connect(DATABASE_FILE)
         cur = conn.cursor()
         # simple test query
+        app.logger.debug("Executing test query")
         cur.execute('SELECT 1').fetchone()
+        app.logger.debug("Test query is successful")
     except Exception as e:
         result = 'NOT OK - unhealthy'
         status_code = 500
         res['reason'] = str(e)
+        app.logger.error(f"Error: failed healthcheck, {str(e)}")
     else:
         result = 'OK - healthy'
     finally:
+        app.logger.debug("Closing database connection")
         conn.close()
         res['result'] = result
         return app.response_class(
@@ -187,4 +196,7 @@ def metrics():
 
 # start the application on port 3111
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG,
+                        format="%(levelname)s:%(name)s:%(asctime)s, %(message)s",
+                        datefmt='%d/%m/%y, %H:%M:%S')
     app.run(host='0.0.0.0', port=PORT)
