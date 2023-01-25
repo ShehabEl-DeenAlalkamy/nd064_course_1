@@ -22,6 +22,28 @@ def get_post(post_id):
     return post
 
 
+def get_posts_count():
+    """Counts the number of Posts available in the posts table.
+
+    get_posts_count() will perform an SQL query against posts table to get the count of the current rows and will return
+    the count on success and -1 on sqlite3.OperationalError Exception.
+
+    Returns:
+        int: returns the number of the posts rows in the posts table on success and -1 on failure
+    """
+    try:
+        cur = get_db_connection().cursor()
+        result = cur.execute(
+            'SELECT count(*) AS post_count FROM posts').fetchone()
+        app.logger.debug(f"post_count: {result['post_count']}")
+    except sqlite3.OperationalError as e:
+        result['post_count'] = -1
+        app.logger.error(f"Error: {e}")
+    finally:
+        cur.close()
+    return result['post_count']
+
+
 # Define the Flask application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
@@ -77,7 +99,7 @@ def healthz():
     healthz() will check the connection with SQLite database by starting a connection and performing a test query.
 
     Returns:
-        json: a JSON object with 'result' key holding state of the application health and 'reason' key in case the application is unhealthy
+        json: a JSON object with 'result' key holding the state of the application health and 'reason' key in case the application is unhealthy
     """
     res = dict()
     status_code = 200
