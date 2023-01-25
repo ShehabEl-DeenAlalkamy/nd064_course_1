@@ -154,6 +154,37 @@ def healthz():
         )
 
 
+@app.route('/metrics')
+def metrics():
+    """Collects basic TechTrends basic metrics.
+
+    metrics() will collect two metrics; the count of the current posts within posts table and the number of current database connections.
+
+    Returns:
+        json: a JSON object with 'db_connection_count' key holding the total amount of the current connections to DATABASE_FILE and 'post_count' key 
+        holding the total amount of posts in the database
+    """
+    res = dict()
+    status_code = 200
+    try:
+        db_connection_count = get_db_connection_count()
+        post_count = get_posts_count()
+    except Exception as e:
+        status_code = 500
+        res['error'] = str(e)
+        app.logger.error(f"MetricsError: {e}")
+    else:
+        res['db_connection_count'] = db_connection_count
+        res['post_count'] = post_count
+        app.logger.debug(f"metrics: {json.dumps(res)}")
+    finally:
+        return app.response_class(
+            response=json.dumps(res),
+            status=status_code,
+            mimetype='application/json'
+        )
+
+
 # start the application on port 3111
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=PORT)
