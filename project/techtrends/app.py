@@ -2,6 +2,7 @@ import sqlite3
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
+import subprocess
 
 DATABASE_FILE = 'database.db'
 PORT = '3111'
@@ -20,6 +21,57 @@ def get_post(post_id):
                               (post_id,)).fetchone()
     connection.close()
     return post
+
+
+def get_db_connection_count():
+    """Counts the number of current connections to the DATABASE_FILE.
+
+    get_db_connection_count() will list open files on DATABASE_FILE using lsof command and count the number of open connections.
+
+    Returns:
+        int: returns the number of current connections to the DATABASE_FILE and -1 on error
+    """
+    try:
+        TIMEOUT = 20
+        p1 = subprocess.Popen(["lsof", DATABASE_FILE], stdout=subprocess.PIPE)
+        p2 = subprocess.Popen(
+            ["wc", "-l"], stdin=p1.stdout, stdout=subprocess.PIPE)
+        # extract the the 1st element of the output tuple, then convert the bytes to string then remove the new line from string then subtract 1 to ignore header line
+        db_connection_count = int(p2.communicate(timeout=TIMEOUT)[
+                                  0].decode("utf-8").replace('\n', '')) - 1
+        db_connection_count = 0 if db_connection_count == -1 else db_connection_count
+        app.logger.debug(f"db_connection_count: {db_connection_count}")
+    except subprocess.TimeoutExpired:
+        p2.kill()
+        app.logger.error(f"Error: process exceeded {TIMEOUT}")
+        db_connection_count = -1
+    except sqlite3.OperationalError as e:
+        p2.kill()
+        app.logger.error(f"Error: {e}")
+        db_connection_count = -1
+    return db_connection_count
+
+
+def get_posts_count():
+    """Counts the number of Posts available in the posts table.
+
+    get_posts_count() will perform an SQL query against posts table to get the count of the current rows and will return
+    the count on success and -1 on sqlite3.OperationalError Exception.
+
+    Returns:
+        int: returns the number of the posts rows in the posts table on success and -1 on failure
+    """
+    try:
+        cur = get_db_connection().cursor()
+        result = cur.execute(
+            'SELECT count(*) AS post_count FROM posts').fetchone()
+        app.logger.debug(f"post_count: {result['post_count']}")
+    except sqlite3.OperationalError as e:
+        result['post_count'] = -1
+        app.logger.error(f"Error: {e}")
+    finally:
+        cur.close()
+    return result['post_count']
 
 
 # Define the Flask application
@@ -77,7 +129,7 @@ def healthz():
     healthz() will check the connection with SQLite database by starting a connection and performing a test query.
 
     Returns:
-        json: a JSON object with 'result' key holding state of the application health and 'reason' key in case the application is unhealthy
+        json: a JSON object with 'result' key holding the state of the application health and 'reason' key in case the application is unhealthy
     """
     res = dict()
     status_code = 200
@@ -95,6 +147,37 @@ def healthz():
     finally:
         conn.close()
         res['result'] = result
+        return app.response_class(
+            response=json.dumps(res),
+            status=status_code,
+            mimetype='application/json'
+        )
+
+
+@app.route('/metrics')
+def metrics():
+    """Collects basic TechTrends basic metrics.
+
+    metrics() will collect two metrics; the count of the current posts within posts table and the number of current database connections.
+
+    Returns:
+        json: a JSON object with 'db_connection_count' key holding the total amount of the current connections to DATABASE_FILE and 'post_count' key 
+        holding the total amount of posts in the database
+    """
+    res = dict()
+    status_code = 200
+    try:
+        db_connection_count = get_db_connection_count()
+        post_count = get_posts_count()
+    except Exception as e:
+        status_code = 500
+        res['error'] = str(e)
+        app.logger.error(f"MetricsError: {e}")
+    else:
+        res['db_connection_count'] = db_connection_count
+        res['post_count'] = post_count
+        app.logger.debug(f"metrics: {json.dumps(res)}")
+    finally:
         return app.response_class(
             response=json.dumps(res),
             status=status_code,
