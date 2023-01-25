@@ -46,7 +46,6 @@ def get_db_connection_count():
         app.logger.error(f"Error: process exceeded {TIMEOUT}")
         db_connection_count = -1
     except sqlite3.OperationalError as e:
-        p2.kill()
         app.logger.error(f"Error: {e}")
         db_connection_count = -1
     return db_connection_count
