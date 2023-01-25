@@ -3,6 +3,7 @@ import sqlite3
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 import subprocess
+import logging
 
 DATABASE_FILE = 'database.db'
 PORT = '3111'
@@ -186,4 +187,7 @@ def metrics():
 
 # start the application on port 3111
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG,
+                        format="%(levelname)s:%(name)s:%(asctime)s, %(message)s",
+                        datefmt='%d/%m/%y, %H:%M:%S')
     app.run(host='0.0.0.0', port=PORT)
