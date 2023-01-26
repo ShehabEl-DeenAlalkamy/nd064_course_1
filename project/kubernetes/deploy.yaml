@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: techtrends
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: web-app
+    app: techtrends
+  name: techtrends
+  namespace: sandbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: techtrends
+  template:
+    metadata:
+      labels:
+        app: techtrends
+      namespace: sandbox
+    spec:
+      containers:
+        - image: shehabeldeen/techtrends:latest
+          name: techtrends
+          ports:
+            - containerPort: 3111
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3111
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3111
