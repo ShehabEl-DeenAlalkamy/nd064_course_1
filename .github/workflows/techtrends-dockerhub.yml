@@ -15,6 +15,9 @@ concurrency:
   # cancel previously running builds in a PR on new pushes
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
+# set default permissions granted to the GITHUB_TOKEN to read only to follow least privilege principle
+permissions: read-all
+
 jobs:
   build:
     timeout-minutes: 30
