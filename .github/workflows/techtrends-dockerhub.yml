@@ -2,7 +2,10 @@ name: TechTrends - Package with Docker
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      # TODO: Remove when development is done
+      - feat/techtrends-ci-workflow
   pull_request:
     branches: [main]
 
