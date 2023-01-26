@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: techtrends
+  namespace: sandbox
+  labels:
+    app.kubernetes.io/name: techtrends
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: web-app
+spec:
+  selector:
+    app: techtrends
+  type: ClusterIP
+  ports:
+    - name: name-of-service-port
+      protocol: TCP
+      port: 4111
+      targetPort: 3111
