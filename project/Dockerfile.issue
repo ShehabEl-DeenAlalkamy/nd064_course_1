@@ -1,0 +1,125 @@
+# This Dockerfile was my initial choice as it's so minimalist
+# This image has no known security issues and the Dockerfile is working HOWEVER, for unknown reason
+# on starting the container I can find that there are few opened connections on 'database.db' file (8 - 10 connections)
+# you can see the logs below:
+
+# 1- docker ps
+# CONTAINER ID   IMAGE        COMMAND           CREATED          STATUS                    PORTS                    NAMES
+# 382f598de3bb   techtrends   "python app.py"   43 seconds ago   Up 42 seconds (healthy)   0.0.0.0:7111->3111/tcp   techtrends-cont
+
+# 2- docker logs techtrends-cont
+#  * Serving Flask app 'app' (lazy loading)
+#  * Environment: production
+#    WARNING: This is a development server. Do not use it in a production deployment.
+#    Use a production WSGI server instead.
+#  * Debug mode: off
+# WARNING:werkzeug:26/01/23, 06:21:13,  * Running on all addresses.
+#    WARNING: This is a development server. Do not use it in a production deployment.
+# INFO:werkzeug:26/01/23, 06:21:13,  * Running on http://172.17.0.2:3111/ (Press CTRL+C to quit)
+# DEBUG:app:26/01/23, 06:21:42, Openning test database connection
+# DEBUG:app:26/01/23, 06:21:42, Executing test query
+# DEBUG:app:26/01/23, 06:21:42, Test query is successful
+# DEBUG:app:26/01/23, 06:21:42, Closing database connection
+# INFO:werkzeug:26/01/23, 06:21:42, 127.0.0.1 - - [26/Jan/2023 06:21:42] "GET /healthz HTTP/1.1" 200 -
+# DEBUG:app:26/01/23, 06:22:12, Openning test database connection
+# DEBUG:app:26/01/23, 06:22:12, Executing test query
+# DEBUG:app:26/01/23, 06:22:12, Test query is successful
+# DEBUG:app:26/01/23, 06:22:12, Closing database connection
+# INFO:werkzeug:26/01/23, 06:22:12, 127.0.0.1 - - [26/Jan/2023 06:22:12] "GET /healthz HTTP/1.1" 200 -
+# DEBUG:app:26/01/23, 06:22:42, Openning test database connection
+# DEBUG:app:26/01/23, 06:22:42, Executing test query
+# DEBUG:app:26/01/23, 06:22:42, Test query is successful
+# DEBUG:app:26/01/23, 06:22:42, Closing database connection
+# INFO:werkzeug:26/01/23, 06:22:42, 127.0.0.1 - - [26/Jan/2023 06:22:42] "GET /healthz HTTP/1.1" 200 -
+# INFO:werkzeug:26/01/23, 06:23:10, 172.17.0.1 - - [26/Jan/2023 06:23:10] "GET / HTTP/1.1" 200 -
+# INFO:werkzeug:26/01/23, 06:23:10, 172.17.0.1 - - [26/Jan/2023 06:23:10] "GET /static/css/main.css HTTP/1.1" 304 -
+# INFO:werkzeug:26/01/23, 06:23:11, 172.17.0.1 - - [26/Jan/2023 06:23:11] "GET /favicon.ico HTTP/1.1" 404 -
+# DEBUG:app:26/01/23, 06:23:13, Openning test database connection
+# DEBUG:app:26/01/23, 06:23:13, Executing test query
+# DEBUG:app:26/01/23, 06:23:13, Test query is successful
+# DEBUG:app:26/01/23, 06:23:13, Closing database connection
+# INFO:werkzeug:26/01/23, 06:23:13, 127.0.0.1 - - [26/Jan/2023 06:23:13] "GET /healthz HTTP/1.1" 200 -
+# INFO:app:26/01/23, 06:23:16, Article "2020 CNCF Annual Report" retrieved!
+# INFO:werkzeug:26/01/23, 06:23:16, 172.17.0.1 - - [26/Jan/2023 06:23:16] "GET /1 HTTP/1.1" 200 -
+# INFO:werkzeug:26/01/23, 06:23:16, 172.17.0.1 - - [26/Jan/2023 06:23:16] "GET /static/css/main.css HTTP/1.1" 304 -
+# INFO:app:26/01/23, 06:23:18, Article "KubeCon + CloudNativeCon 2021" retrieved!
+# INFO:werkzeug:26/01/23, 06:23:18, 172.17.0.1 - - [26/Jan/2023 06:23:18] "GET /2 HTTP/1.1" 200 -
+# INFO:werkzeug:26/01/23, 06:23:18, 172.17.0.1 - - [26/Jan/2023 06:23:18] "GET /static/css/main.css HTTP/1.1" 304 -
+# INFO:app:26/01/23, 06:23:20, About page retrieved!
+# INFO:werkzeug:26/01/23, 06:23:20, 172.17.0.1 - - [26/Jan/2023 06:23:20] "GET /about HTTP/1.1" 200 -
+# INFO:werkzeug:26/01/23, 06:23:20, 172.17.0.1 - - [26/Jan/2023 06:23:20] "GET /static/css/main.css HTTP/1.1" 304 -
+# INFO:werkzeug:26/01/23, 06:23:22, 172.17.0.1 - - [26/Jan/2023 06:23:22] "GET /create HTTP/1.1" 200 -
+# INFO:werkzeug:26/01/23, 06:23:22, 172.17.0.1 - - [26/Jan/2023 06:23:22] "GET /static/css/main.css HTTP/1.1" 304 -
+# DEBUG:app:26/01/23, 06:23:43, Openning test database connection
+# DEBUG:app:26/01/23, 06:23:43, Executing test query
+# DEBUG:app:26/01/23, 06:23:43, Test query is successful
+# DEBUG:app:26/01/23, 06:23:43, Closing database connection
+# INFO:werkzeug:26/01/23, 06:23:43, 127.0.0.1 - - [26/Jan/2023 06:23:43] "GET /healthz HTTP/1.1" 200 -
+# INFO:app:26/01/23, 06:23:43, New Article "Argo CD" created!
+# INFO:werkzeug:26/01/23, 06:23:43, 172.17.0.1 - - [26/Jan/2023 06:23:43] "POST /create HTTP/1.1" 302 -
+# INFO:werkzeug:26/01/23, 06:23:43, 172.17.0.1 - - [26/Jan/2023 06:23:43] "GET / HTTP/1.1" 200 -
+# INFO:werkzeug:26/01/23, 06:23:43, 172.17.0.1 - - [26/Jan/2023 06:23:43] "GET /static/css/main.css HTTP/1.1" 304 -
+# DEBUG:app:26/01/23, 06:23:52, Openning test database connection
+# DEBUG:app:26/01/23, 06:23:52, Executing test query
+# DEBUG:app:26/01/23, 06:23:52, Test query is successful
+# DEBUG:app:26/01/23, 06:23:52, Closing database connection
+# INFO:werkzeug:26/01/23, 06:23:52, 172.17.0.1 - - [26/Jan/2023 06:23:52] "GET /healthz HTTP/1.1" 200 -
+# DEBUG:app:26/01/23, 06:23:55, db_connection_count: 7
+# DEBUG:app:26/01/23, 06:23:55, post_count: 7
+# DEBUG:app:26/01/23, 06:23:55, metrics: {"db_connection_count": 7, "post_count": 7}
+# INFO:werkzeug:26/01/23, 06:23:55, 172.17.0.1 - - [26/Jan/2023 06:23:55] "GET /metrics HTTP/1.1" 200 -
+# DEBUG:app:26/01/23, 06:24:13, Openning test database connection
+# DEBUG:app:26/01/23, 06:24:13, Executing test query
+# DEBUG:app:26/01/23, 06:24:13, Test query is successful
+# DEBUG:app:26/01/23, 06:24:13, Closing database connection
+# INFO:werkzeug:26/01/23, 06:24:13, 127.0.0.1 - - [26/Jan/2023 06:24:13] "GET /healthz HTTP/1.1" 200 -
+
+# 3- docker exec -it techtrends-cont sh
+# /usr/app $ ls
+# README.md         __init__.py       app.py            database.db       init_db.py        requirements.txt  schema.sql        static            templates
+# /usr/app $ lsof database.db
+# 1	/usr/local/bin/python3.8	0	/dev/null
+# 1	/usr/local/bin/python3.8	1	pipe:[22471]
+# 1	/usr/local/bin/python3.8	2	pipe:[22472]
+# 1	/usr/local/bin/python3.8	3	socket:[26864]
+# 96	/bin/busybox	0	/dev/pts/0
+# 96	/bin/busybox	1	/dev/pts/0
+# 96	/bin/busybox	2	/dev/pts/0
+# 96	/bin/busybox	10	/dev/tty
+
+# I tried to investigate but I have no idea so I dropped it and chose Dockerfile over Dockerfile.issue
+
+# I was hoping you can support me with this
+
+FROM python:3.8-alpine@sha256:9e8a162cd85c78458ac47457b08450be8ca4ae5de5ee0f7b23665b6ea2569aed
+
+# Adding doas pacakge, an alternative to sudo package
+RUN apk add doas && \
+    # Following least privilege principle, to ensure we don't provide root access to our container default user
+    addgroup -g 3000 -S python && \
+    adduser -u 3000 -G python -S python
+
+RUN mkdir /usr/app && chown python:python /usr/app
+WORKDIR /usr/app
+
+# Ensuring curl is installed for docker native HEALTHCHECK command
+RUN apk add curl && \
+    rm -rf /var/cache/apk/*
+
+# Making use of docker layer caching by separating the dependencies from the source code
+COPY --chown=python:python ./techtrends/requirements.txt .
+RUN pip install -r requirements.txt
+
+# Adding source code
+COPY --chown=python:python ./techtrends/ .
+
+# su python
+USER 3000
+
+EXPOSE 3111
+
+# Initializing database
+RUN python init_db.py
+CMD [ "python", "app.py" ]
+# Adding a healthcheck to TechTrends /healthz endpoint to test the container functionality and this will be ignored by k8s if liveness probe specified
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl -f http://localhost:3111/healthz

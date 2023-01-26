@@ -1,7 +1,6 @@
 import sqlite3
 
-from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
-from werkzeug.exceptions import abort
+from flask import Flask, json, render_template, request, url_for, redirect, flash
 import subprocess
 import logging
 
@@ -99,6 +98,8 @@ def post(post_id):
         return render_template('post.html', post=post)
 
 # Define the About Us page
+
+
 @app.route('/about')
 def about():
     app.logger.info("About page retrieved!")
