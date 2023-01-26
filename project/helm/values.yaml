@@ -3,7 +3,7 @@ namespace: sandbox
 replicaCount: 1
 
 image:
-  repository: shehabeldeen/nginx
+  repository: shehabeldeen/techtrends
   tag: latest
   pullPolicy: IfNotPresent
 
