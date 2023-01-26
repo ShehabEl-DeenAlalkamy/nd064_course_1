@@ -13,7 +13,7 @@ spec:
     app: techtrends
   type: ClusterIP
   ports:
-    - name: name-of-service-port
+    - name: http
       protocol: TCP
       port: 4111
       targetPort: 3111

@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/managed-by: helm
+    app.kubernetes.io/component: web-app
+spec:
+  selector:
+    app: {{ .Chart.Name }}
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      protocol: {{ .Values.service.protocol }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}

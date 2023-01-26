@@ -1,0 +1,30 @@
+namespace: sandbox
+
+replicaCount: 1
+
+image:
+  repository: shehabeldeen/nginx
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  protocol: TCP
+  port: 4111
+  targetPort: 3111
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "64Mi"
+  limits:
+    cpu: "500m"
+    memory: "128Mi"
+
+containerPort: 3111
+ 
+# checks on containerPort
+livenessProbePath: /healthz
+
+# checks on containerPort
+readinessProbePath: /healthz
