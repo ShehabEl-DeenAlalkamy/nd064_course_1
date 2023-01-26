@@ -20,7 +20,8 @@ permissions: read-all
 
 jobs:
   build:
-    timeout-minutes: 30
+    # set timeout to 15 mins max to decrease hanging jobs issues, default is 6 Hrs
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
