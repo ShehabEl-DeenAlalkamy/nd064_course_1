@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - main
-      # TODO: Remove when development is done
-      - feat/techtrends-ci-workflow
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 # ensure that only a single job or workflow using the same concurrency group will run at a time
 concurrency:
