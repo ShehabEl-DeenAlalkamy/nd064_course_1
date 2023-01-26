@@ -18,6 +18,7 @@ spec:
     metadata:
       labels:
         app: techtrends
+      namespace: sandbox
     spec:
       containers:
         - image: shehabeldeen/techtrends:latest
