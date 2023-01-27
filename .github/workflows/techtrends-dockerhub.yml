@@ -3,10 +3,15 @@ name: TechTrends - Package with Docker
 on:
   push:
     branches:
-      - main
+      # it was required from the project requirements to trigger on main branch but in real use cases, the ci should be triggered on all branches
+      # - main
+      - "**"
+    tags:
+      - "v*.*.*"
   pull_request:
     branches:
       - main
+      - "releases/**"
 
 # ensure that only a single job or workflow using the same concurrency group will run at a time
 concurrency:
@@ -26,6 +31,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/techtrends
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/techtrends
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+          # generate Docker custom labels
+          labels: |
+            org.opencontainers.image.title=TechTrends
+            org.opencontainers.image.description=TechTrends is an online website used as a news sharing platform, that enables consumers to access the latest news within the cloud-native ecosystem.
+            org.opencontainers.image.vendor=shehabeldeenalalkamy@gmail.com
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -42,5 +69,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./project
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/techtrends:latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
