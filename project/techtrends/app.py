@@ -28,10 +28,10 @@ def get_post(post_id):
     return post
 
 
-def get_db_connection_count():
+def get_open_db_connections_count():
     """Counts the number of current connections to the DATABASE_FILE.
 
-    get_db_connection_count() will list open files on DATABASE_FILE using lsof command and count the number of open connections.
+    get_open_db_connections_count() will list open files on DATABASE_FILE using lsof command and count the number of open connections.
 
     Returns:
         int: returns the number of current connections to the DATABASE_FILE and -1 on error
@@ -196,7 +196,7 @@ def metrics():
     res = dict()
     status_code = 200
     try:
-        db_connection_count = get_db_connection_count()
+        db_connection_count = get_open_db_connections_count()
         post_count = get_posts_count()
     except Exception as e:
         status_code = 500
