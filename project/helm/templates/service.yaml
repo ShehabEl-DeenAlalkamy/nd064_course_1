@@ -17,4 +17,8 @@ spec:
     - name: http
       protocol: {{ .Values.service.protocol }}
       port: {{ .Values.service.port }}
+      {{- if .Values.service.targetPort }}
       targetPort: {{ .Values.service.targetPort }}
+      {{- else }}
+      targetPort: {{ .Values.service.port }}        
+      {{- end }}
