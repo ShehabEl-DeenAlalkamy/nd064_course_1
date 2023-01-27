@@ -7,14 +7,27 @@ import logging
 DATABASE_FILE = 'database.db'
 PORT = '3111'
 
+
+class DB_Connection:
+    def __init__(self, count_healthchecks=False):
+        self.count = 0
+        self.count_healthchecks = count_healthchecks
+
+    def __str__(self):
+        return f"{self.count}"
+
+    def increment(self):
+        self.count += 1
+
+
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
     connection = None
-    try: 
+    try:
         connection = sqlite3.connect(f"file:{DATABASE_FILE}?mode=rw", uri=True)
     except sqlite3.OperationalError as e:
-        raise RuntimeError(f"unable to open {DATABASE_FILE} database file")    
+        raise RuntimeError(f"unable to open {DATABASE_FILE} database file")
     if connection:
         connection.row_factory = sqlite3.Row
     return connection
