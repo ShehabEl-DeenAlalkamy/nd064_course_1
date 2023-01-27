@@ -3,10 +3,10 @@ import sqlite3
 from flask import Flask, json, render_template, request, url_for, redirect, flash
 import subprocess
 import logging
+import platform
 
 DATABASE_FILE = 'database.db'
 PORT = '3111'
-
 
 class DB_Connection:
     def __init__(self, count_healthchecks=False):
@@ -45,7 +45,8 @@ def get_post(post_id):
 def get_open_db_connections_count():
     """Counts the number of current connections to the DATABASE_FILE.
 
-    get_open_db_connections_count() will list open files on DATABASE_FILE using lsof command and count the number of open connections.
+    if platform.system() not in ['Java', 'Windows'], get_open_db_connections_count() will list open files on DATABASE_FILE using lsof command and
+    count the number of open connections.
 
     Returns:
         int: returns the number of current connections to the DATABASE_FILE and -1 on error
