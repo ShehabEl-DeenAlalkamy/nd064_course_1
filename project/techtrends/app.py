@@ -10,8 +10,13 @@ PORT = '3111'
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
-    connection = sqlite3.connect(DATABASE_FILE)
-    connection.row_factory = sqlite3.Row
+    connection = None
+    try: 
+        connection = sqlite3.connect(f"file:{DATABASE_FILE}?mode=rw", uri=True)
+    except sqlite3.OperationalError as e:
+        raise RuntimeError(f"unable to open {DATABASE_FILE} database file")    
+    if connection:
+        connection.row_factory = sqlite3.Row
     return connection
 
 # Function to get a post using its ID
@@ -98,8 +103,6 @@ def post(post_id):
         return render_template('post.html', post=post)
 
 # Define the About Us page
-
-
 @app.route('/about')
 def about():
     app.logger.info("About page retrieved!")
@@ -131,21 +134,36 @@ def create():
 def healthz():
     """Validates application health.
 
-    healthz() will check the connection with SQLite database by starting a connection and performing a test query.
+    healthz() will check the connection with SQLite database by starting a connection and performing a test query. healthz() will perform the
+    following checks:
+        - check if DATABASE_FILE exists.
+        - execute simple test query
+        - execute simple test query against 'posts' table
 
     Returns:
         json: a JSON object with 'result' key holding the state of the application health and 'reason' key in case the application is unhealthy
     """
     res = dict()
     status_code = 200
+    conn = None
     try:
         app.logger.debug("Openning test database connection")
-        conn = sqlite3.connect(DATABASE_FILE)
-        cur = conn.cursor()
-        # simple test query
-        app.logger.debug("Executing test query")
-        cur.execute('SELECT 1').fetchone()
-        app.logger.debug("Test query is successful")
+        # will fail if DATABASE_FILE doesn't exist
+        conn = sqlite3.connect(f"file:{DATABASE_FILE}?mode=rw", uri=True)
+        if conn:
+            cur = conn.cursor()
+            # simple test query
+            app.logger.debug("Executing test query")
+            cur.execute('SELECT 1').fetchone()
+            app.logger.debug("Test query is successful")
+            app.logger.debug("Executing test query on \"posts\" table")
+            cur.execute('SELECT 1 FROM posts').fetchone()
+            app.logger.debug("Test query is successful")
+    except sqlite3.OperationalError as e:
+        result = 'NOT OK - unhealthy'
+        status_code = 500
+        res['reason'] = str(e)
+        app.logger.error(f"Error: failed healthcheck, {str(e)}")
     except Exception as e:
         result = 'NOT OK - unhealthy'
         status_code = 500
@@ -154,8 +172,9 @@ def healthz():
     else:
         result = 'OK - healthy'
     finally:
-        app.logger.debug("Closing database connection")
-        conn.close()
+        if conn:
+            app.logger.debug("Closing database connection")
+            conn.close()
         res['result'] = result
         return app.response_class(
             response=json.dumps(res),
