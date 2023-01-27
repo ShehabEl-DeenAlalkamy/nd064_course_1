@@ -45,6 +45,10 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha
+          labels: |
+            org.opencontainers.image.title=TechTrends
+            org.opencontainers.image.description=TechTrends is an online website used as a news sharing platform, that enables consumers to access the latest news within the cloud-native ecosystem.
+            org.opencontainers.image.vendor=shehabeldeenalalkamy@gmail.com
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -63,4 +67,5 @@ jobs:
         with:
           context: ./project
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/techtrends:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
