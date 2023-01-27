@@ -230,6 +230,7 @@ def metrics():
         app.logger.error(f"MetricsError: {e}")
     else:
         # res['open_db_connections_count'] = open_db_connections_count
+        res['db_connection_count'] = db_conn.count
         res['post_count'] = post_count
         app.logger.debug(f"metrics: {json.dumps(res)}")
     finally:
