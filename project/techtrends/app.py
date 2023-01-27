@@ -76,8 +76,6 @@ def get_open_db_connections_count():
         except sqlite3.OperationalError as e:
             app.logger.error(f"Error: {e}")
             open_db_connections_count = -1
-        print("succeeded")
-        print(open_db_connections_count)
         return open_db_connections_count
     else:
         return None
