@@ -38,6 +38,7 @@ def get_post(post_id):
     post = connection.execute('SELECT * FROM posts WHERE id = ?',
                               (post_id,)).fetchone()
     connection.close()
+    db_conn.increment()
     return post
 
 
@@ -88,6 +89,8 @@ def get_posts_count():
         app.logger.error(f"Error: {e}")
     finally:
         cur.close()
+        if db_conn.count_healthchecks:
+            db_conn.increment()
     return result['post_count']
 
 
@@ -104,6 +107,7 @@ def index():
     connection = get_db_connection()
     posts = connection.execute('SELECT * FROM posts').fetchall()
     connection.close()
+    db_conn.increment()
     return render_template('index.html', posts=posts)
 
 # Define how each individual article is rendered
@@ -139,6 +143,8 @@ def create():
                                (title, content))
             connection.commit()
             connection.close()
+            
+            db_conn.increment()
 
             app.logger.info(f"New Article \"{title}\" created!")
             return redirect(url_for('index'))
@@ -172,9 +178,13 @@ def healthz():
             app.logger.debug("Executing test query")
             cur.execute('SELECT 1').fetchone()
             app.logger.debug("Test query is successful")
+            if db_conn.count_healthchecks:
+                db_conn.increment()
             app.logger.debug("Executing test query on \"posts\" table")
             cur.execute('SELECT 1 FROM posts').fetchone()
             app.logger.debug("Test query is successful")
+            if db_conn.count_healthchecks:
+                db_conn.increment()            
     except sqlite3.OperationalError as e:
         result = 'NOT OK - unhealthy'
         status_code = 500
