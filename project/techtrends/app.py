@@ -95,6 +95,9 @@ def get_posts_count():
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
+# Create DB_Connection() obj
+db_conn = DB_Connection()
+
 # Define the main route of the web application
 @app.route('/')
 def index():
