@@ -196,14 +196,14 @@ def metrics():
     res = dict()
     status_code = 200
     try:
-        db_connection_count = get_open_db_connections_count()
+        open_db_connections_count = get_open_db_connections_count()
         post_count = get_posts_count()
     except Exception as e:
         status_code = 500
         res['error'] = str(e)
         app.logger.error(f"MetricsError: {e}")
     else:
-        res['db_connection_count'] = db_connection_count
+        res['open_db_connections_count'] = open_db_connections_count
         res['post_count'] = post_count
         app.logger.debug(f"metrics: {json.dumps(res)}")
     finally:
