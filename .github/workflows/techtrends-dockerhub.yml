@@ -3,7 +3,9 @@ name: TechTrends - Package with Docker
 on:
   push:
     branches:
-      - main
+      # it was required from the project requirements to trigger on main branch but in real use cases, the ci should be triggered on all branches
+      # - main
+      - "**"
     tags:
       - "v*.*.*"
   pull_request:
