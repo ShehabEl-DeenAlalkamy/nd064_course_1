@@ -8,6 +8,7 @@ import platform
 DATABASE_FILE = 'database.db'
 PORT = '3111'
 
+
 class DB_Connection:
     def __init__(self, count_healthchecks=False):
         self.count = 0
@@ -53,23 +54,30 @@ def get_open_db_connections_count():
     """
     if platform.system() not in ['Windows', 'Java']:
         try:
+            app.logger.debug(f"{platform.system()} detected")
+            app.logger.debug(f"collecting current open connections to {DATABASE_FILE}")
             TIMEOUT = 20
-            p1 = subprocess.Popen(["lsof", DATABASE_FILE], stdout=subprocess.PIPE)
+            p1 = subprocess.Popen(["lsof", DATABASE_FILE],
+                                  stdout=subprocess.PIPE)
             p2 = subprocess.Popen(
                 ["wc", "-l"], stdin=p1.stdout, stdout=subprocess.PIPE)
             # extract the the 1st element of the output tuple, then convert the bytes to string then remove the new line from string then subtract 1 to ignore header line
-            db_connection_count = int(p2.communicate(timeout=TIMEOUT)[
-                                    0].decode("utf-8").replace('\n', '')) - 1
-            db_connection_count = 0 if db_connection_count == -1 else db_connection_count
-            app.logger.debug(f"db_connection_count: {db_connection_count}")
+            open_db_connections_count = int(p2.communicate(timeout=TIMEOUT)[
+                0].decode("utf-8").replace('\n', '')) - 1
+            open_db_connections_count = 0 if open_db_connections_count == - \
+                1 else open_db_connections_count
+            app.logger.debug(
+                f"open_db_connections_count: {open_db_connections_count}")
         except subprocess.TimeoutExpired:
             p2.kill()
             app.logger.error(f"Error: process exceeded {TIMEOUT}")
-            db_connection_count = -1
+            open_db_connections_count = -1
         except sqlite3.OperationalError as e:
             app.logger.error(f"Error: {e}")
-            db_connection_count = -1
-        return db_connection_count
+            open_db_connections_count = -1
+        print("succeeded")
+        print(open_db_connections_count)
+        return open_db_connections_count
     else:
         return None
 
@@ -147,7 +155,7 @@ def create():
                                (title, content))
             connection.commit()
             connection.close()
-            
+
             db_conn.increment()
 
             app.logger.info(f"New Article \"{title}\" created!")
@@ -188,7 +196,7 @@ def healthz():
             cur.execute('SELECT 1 FROM posts').fetchone()
             app.logger.debug("Test query is successful")
             if db_conn.count_healthchecks:
-                db_conn.increment()            
+                db_conn.increment()
     except sqlite3.OperationalError as e:
         result = 'NOT OK - unhealthy'
         status_code = 500
@@ -220,8 +228,10 @@ def metrics():
     metrics() will collect two metrics; the count of the current posts within posts table and the number of current database connections.
 
     Returns:
-        json: a JSON object with 'db_connection_count' key holding the total amount of the current connections to DATABASE_FILE and 'post_count' key 
-        holding the total amount of posts in the database
+        json: a JSON object with:
+            - 'db_connection_count' key holding the total amount of the current connections made to DATABASE_FILE
+            - 'post_count' key holding the total amount of posts in the database
+            - 'open_db_connections_count' key holding the total amount of the current open connections to DATABASE_FILE
     """
     res = dict()
     status_code = 200
@@ -233,7 +243,7 @@ def metrics():
         res['error'] = str(e)
         app.logger.error(f"MetricsError: {e}")
     else:
-        if open_db_connections_count:
+        if isinstance(open_db_connections_count, int):
             res['open_db_connections_count'] = open_db_connections_count
         res['db_connection_count'] = db_conn.count
         res['post_count'] = post_count
