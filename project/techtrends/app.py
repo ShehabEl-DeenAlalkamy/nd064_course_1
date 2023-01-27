@@ -10,8 +10,13 @@ PORT = '3111'
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
-    connection = sqlite3.connect(DATABASE_FILE)
-    connection.row_factory = sqlite3.Row
+    connection = None
+    try: 
+        connection = sqlite3.connect(f"file:{DATABASE_FILE}?mode=rw", uri=True)
+    except sqlite3.OperationalError as e:
+        raise RuntimeError(f"unable to open {DATABASE_FILE} database file")    
+    if connection:
+        connection.row_factory = sqlite3.Row
     return connection
 
 # Function to get a post using its ID
