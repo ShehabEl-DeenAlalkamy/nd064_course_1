@@ -45,6 +45,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha
+          # generate Docker custom labels
           labels: |
             org.opencontainers.image.title=TechTrends
             org.opencontainers.image.description=TechTrends is an online website used as a news sharing platform, that enables consumers to access the latest news within the cloud-native ecosystem.
