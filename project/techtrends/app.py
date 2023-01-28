@@ -11,6 +11,22 @@ PORT = '3111'
 
 
 class DB_Connection:
+    """
+    A class to represent SQLite database open connection counter.
+
+    ...
+
+    Attributes
+    ----------
+    count_healthchecks : bool
+        whether to count open connections made at /healthz
+
+    Methods
+    -------
+    increment():
+        increase self.counter by 1.
+    """
+
     def __init__(self, count_healthchecks=False):
         self.count = 0
         self.count_healthchecks = count_healthchecks
@@ -19,7 +35,50 @@ class DB_Connection:
         return f"{self.count}"
 
     def increment(self):
+        """Increments self.count by 1
+
+        Returns:
+            None
+        """
         self.count += 1
+        return
+
+
+class SingleLevel(logging.Filter):
+    """
+    A class to represent a single logging level filter.
+
+    ...
+
+    Attributes
+    ----------
+    passlevel : int
+        log level to pass
+    reject : bool
+        whether to reject self.passlevel 
+
+    Methods
+    -------
+    filter(record):
+        compares incoming logging records level no and either filter them to self.passlevel only and if self.reject=True it will reject those with 
+        same self.passlevel.
+    """
+
+    def __init__(self, passlevel, reject):
+        self.passlevel = passlevel
+        self.reject = reject
+
+    def filter(self, record):
+        """Filters incoming logging record.
+
+        Returns:
+            compares incoming logging records level no and either filter them to self.passlevel only and if self.reject=True it will reject those with 
+            same self.passlevel.
+        """
+        if self.reject:
+            return (record.levelno != self.passlevel)
+        else:
+            return (record.levelno == self.passlevel)
 
 
 # Function to get a database connection.
@@ -56,7 +115,8 @@ def get_open_db_connections_count():
     if platform.system() not in ['Windows', 'Java']:
         try:
             app.logger.debug(f"{platform.system()} detected")
-            app.logger.debug(f"collecting current open connections to {DATABASE_FILE}")
+            app.logger.debug(
+                f"collecting current open connections to {DATABASE_FILE}")
             TIMEOUT = 20
             p1 = subprocess.Popen(["lsof", DATABASE_FILE],
                                   stdout=subprocess.PIPE)
@@ -257,11 +317,11 @@ def metrics():
 
 # start the application on port 3111
 if __name__ == "__main__":
-    # set logger to handle STDOUT and STDERR 
+    # set logger to handle STDOUT and STDERR
     stdout_handler = logging.StreamHandler(sys.stdout)
     stderr_handler = logging.StreamHandler(sys.stderr)
     handlers = [stderr_handler, stdout_handler]
-    
+
     logging.basicConfig(level=logging.DEBUG,
                         format="[%(levelname)s]:%(name)s:%(asctime)s, %(message)s",
                         datefmt='%d/%m/%y, %H:%M:%S',
