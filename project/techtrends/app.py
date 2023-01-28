@@ -209,7 +209,7 @@ def healthz():
     status_code = 200
     conn = None
     try:
-        app.logger.debug("Openning test database connection")
+        app.logger.debug("Opening test database connection")
         # will fail if DATABASE_FILE doesn't exist
         conn = sqlite3.connect(f"file:{DATABASE_FILE}?mode=rw", uri=True)
         if conn:
