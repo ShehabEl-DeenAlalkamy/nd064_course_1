@@ -64,7 +64,7 @@ docker logs -f techtrends-cont
 [DEBUG]:app:28/01/23, 16:05:44, post_count: 9
 [DEBUG]:app:28/01/23, 16:05:44, metrics: {"db_connection_count": 4, "open_db_connections_count": 0, "post_count": 9}
 [INFO]:werkzeug:28/01/23, 16:05:44, 192.168.1.4 - - [28/Jan/2023 16:05:44] "GET /metrics HTTP/1.1" 200 -
-[DEBUG]:app:28/01/23, 16:07:51, Openning test database connection
+[DEBUG]:app:28/01/23, 16:07:51, Opening test database connection
 [DEBUG]:app:28/01/23, 16:07:51, Executing test query
 [DEBUG]:app:28/01/23, 16:07:51, Test query is successful
 [DEBUG]:app:28/01/23, 16:07:51, Executing test query on "posts" table
@@ -83,13 +83,13 @@ docker logs -f techtrends-cont
 [INFO]:app:28/01/23, 16:09:16, Article "GitHub Actions" retrieved!
 [INFO]:werkzeug:28/01/23, 16:09:16, 192.168.1.4 - - [28/Jan/2023 16:09:16] "GET /10 HTTP/1.1" 200 -
 [INFO]:werkzeug:28/01/23, 16:09:16, 192.168.1.4 - - [28/Jan/2023 16:09:16] "GET /static/css/main.css HTTP/1.1" 304 -
-[DEBUG]:app:28/01/23, 16:10:10, Openning test database connection
+[DEBUG]:app:28/01/23, 16:10:10, Opening test database connection
 [ERROR]:app:28/01/23, 16:10:10, Error: failed healthcheck, unable to open database file
 [INFO]:werkzeug:28/01/23, 16:10:10, 192.168.1.4 - - [28/Jan/2023 16:10:10] "GET /healthz HTTP/1.1" 500 -
-[DEBUG]:app:28/01/23, 16:10:14, Openning test database connection
+[DEBUG]:app:28/01/23, 16:10:14, Opening test database connection
 [ERROR]:app:28/01/23, 16:10:14, Error: failed healthcheck, unable to open database file
 [INFO]:werkzeug:28/01/23, 16:10:14, 192.168.1.4 - - [28/Jan/2023 16:10:14] "GET /healthz HTTP/1.1" 500 -
-[DEBUG]:app:28/01/23, 16:10:31, Openning test database connection
+[DEBUG]:app:28/01/23, 16:10:31, Opening test database connection
 [DEBUG]:app:28/01/23, 16:10:31, Executing test query
 [DEBUG]:app:28/01/23, 16:10:31, Test query is successful
 [DEBUG]:app:28/01/23, 16:10:31, Executing test query on "posts" table
