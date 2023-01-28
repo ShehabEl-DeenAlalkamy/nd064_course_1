@@ -24,7 +24,11 @@ resources:
 containerPort: 3111
  
 # checks on containerPort
-livenessProbePath: /healthz
+livenessProbe:
+  path: /healthz
+  port: ""
 
 # checks on containerPort
-readinessProbePath: /healthz
+readinessProbe:
+  path: /healthz
+  port: ""
