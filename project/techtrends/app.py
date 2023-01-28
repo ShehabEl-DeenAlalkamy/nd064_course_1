@@ -142,7 +142,7 @@ def get_open_db_connections_count():
     """
     if platform.system() not in ['Windows', 'Java']:
         try:
-            app.logger.debug(f"{platform.system()} detected")
+            app.logger.debug(f"\"{platform.system()}\" os detected")
             app.logger.debug(
                 f"collecting current open connections to {DATABASE_FILE}")
             TIMEOUT = 20
@@ -166,7 +166,7 @@ def get_open_db_connections_count():
             open_db_connections_count = -1
         return open_db_connections_count
     else:
-        app.logger.debug(f"{platform.system()} detected")
+        app.logger.debug(f"\"{platform.system()}\" os detected")
         app.logger.debug("ignoring current open connections metric")
         return None
 
