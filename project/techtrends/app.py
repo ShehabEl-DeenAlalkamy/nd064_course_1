@@ -11,16 +11,16 @@ DATABASE_FILE = 'database.db'
 PORT = '3111'
 
 
-class DB_Connection:
+class DBConnectionCounter:
     """
-    A class to represent SQLite database open connection counter.
+    A class to represent SQLite database connection counter.
 
     ...
 
     Attributes
     ----------
     count_healthchecks : bool
-        whether to count open connections made at /healthz
+        whether to count connections made at /healthz
 
     Methods
     -------
@@ -63,7 +63,7 @@ def get_post(post_id):
     post = connection.execute('SELECT * FROM posts WHERE id = ?',
                               (post_id,)).fetchone()
     connection.close()
-    db_conn.increment()
+    db_conn_counter.increment()
     return post
 
 
@@ -126,8 +126,8 @@ def get_posts_count():
         app.logger.error(f"Error: {e}")
     finally:
         cur.close()
-        if db_conn.count_healthchecks:
-            db_conn.increment()
+        if db_conn_counter.count_healthchecks:
+            db_conn_counter.increment()
     return result['post_count']
 
 
@@ -136,7 +136,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
 # Create DB_Connection() obj
-db_conn = DB_Connection()
+db_conn_counter = DBConnectionCounter()
 
 # Define the main route of the web application
 @app.route('/')
@@ -144,7 +144,7 @@ def index():
     connection = get_db_connection()
     posts = connection.execute('SELECT * FROM posts').fetchall()
     connection.close()
-    db_conn.increment()
+    db_conn_counter.increment()
     return render_template('index.html', posts=posts)
 
 # Define how each individual article is rendered
@@ -181,7 +181,7 @@ def create():
             connection.commit()
             connection.close()
 
-            db_conn.increment()
+            db_conn_counter.increment()
 
             app.logger.info(f"New Article \"{title}\" created!")
             return redirect(url_for('index'))
@@ -215,13 +215,13 @@ def healthz():
             app.logger.debug("Executing test query")
             cur.execute('SELECT 1').fetchone()
             app.logger.debug("Test query is successful")
-            if db_conn.count_healthchecks:
-                db_conn.increment()
+            if db_conn_counter.count_healthchecks:
+                db_conn_counter.increment()
             app.logger.debug("Executing test query on \"posts\" table")
             cur.execute('SELECT 1 FROM posts').fetchone()
             app.logger.debug("Test query is successful")
-            if db_conn.count_healthchecks:
-                db_conn.increment()
+            if db_conn_counter.count_healthchecks:
+                db_conn_counter.increment()
     except sqlite3.OperationalError as e:
         result = 'NOT OK - unhealthy'
         status_code = 500
@@ -270,7 +270,7 @@ def metrics():
     else:
         if isinstance(open_db_connections_count, int):
             res['open_db_connections_count'] = open_db_connections_count
-        res['db_connection_count'] = db_conn.count
+        res['db_connection_count'] = db_conn_counter.count
         res['post_count'] = post_count
         app.logger.debug(f"metrics: {json.dumps(res)}")
     finally:
