@@ -44,7 +44,7 @@ class DB_Connection:
         return
 
 
-class SingleLevel(logging.Filter):
+class SingleLevelFilter(logging.Filter):
     """
     A class to represent a single logging level filter.
 
@@ -81,7 +81,7 @@ class SingleLevel(logging.Filter):
             return (record.levelno == self.passlevel)
 
 
-class MaxLevel(logging.Filter):
+class MaxLevelFilter(logging.Filter):
     """
     A class to represent a maximum logging level filter.
 
@@ -349,9 +349,16 @@ if __name__ == "__main__":
     stdout_handler = logging.StreamHandler(sys.stdout)
     stderr_handler = logging.StreamHandler(sys.stderr)
     handlers = [stderr_handler, stdout_handler]
+    
+    info_lvl_filter = SingleLevelFilter(logging.INFO, False)
+    info_lvl_filter_inverter = SingleLevelFilter(logging.INFO, True)
+    
+    stdout_handler.addFilter(info_lvl_filter)
+    stderr_handler.addFilter(info_lvl_filter_inverter)
 
     logging.basicConfig(level=logging.DEBUG,
                         format="[%(levelname)s]:%(name)s:%(asctime)s, %(message)s",
                         datefmt='%d/%m/%y, %H:%M:%S',
                         handlers=handlers)
+    
     app.run(host='0.0.0.0', port=PORT)
