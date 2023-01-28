@@ -42,86 +42,60 @@ docker logs -f techtrends-cont
    WARNING: This is a development server. Do not use it in a production deployment.
    Use a production WSGI server instead.
  * Debug mode: off
-WARNING:werkzeug:26/01/23, 06:43:15,  * Running on all addresses.
+[WARNING]:werkzeug:28/01/23, 16:04:56,  * Running on all addresses.
    WARNING: This is a development server. Do not use it in a production deployment.
-INFO:werkzeug:26/01/23, 06:43:15,  * Running on http://172.17.0.2:3111/ (Press CTRL+C to quit)
-DEBUG:app:26/01/23, 06:43:45, Openning test database connection
-DEBUG:app:26/01/23, 06:43:45, Executing test query
-DEBUG:app:26/01/23, 06:43:45, Test query is successful
-DEBUG:app:26/01/23, 06:43:45, Closing database connection
-INFO:werkzeug:26/01/23, 06:43:45, 127.0.0.1 - - [26/Jan/2023 06:43:45] "GET /healthz HTTP/1.1" 200 -
-DEBUG:app:26/01/23, 06:44:15, Openning test database connection
-DEBUG:app:26/01/23, 06:44:15, Executing test query
-DEBUG:app:26/01/23, 06:44:15, Test query is successful
-DEBUG:app:26/01/23, 06:44:15, Closing database connection
-INFO:werkzeug:26/01/23, 06:44:15, 127.0.0.1 - - [26/Jan/2023 06:44:15] "GET /healthz HTTP/1.1" 200 -
-INFO:werkzeug:26/01/23, 06:44:26, 172.17.0.1 - - [26/Jan/2023 06:44:26] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:26/01/23, 06:44:26, 172.17.0.1 - - [26/Jan/2023 06:44:26] "GET /static/css/main.css HTTP/1.1" 304 -
-DEBUG:app:26/01/23, 06:44:45, Openning test database connection
-DEBUG:app:26/01/23, 06:44:45, Executing test query
-DEBUG:app:26/01/23, 06:44:45, Test query is successful
-DEBUG:app:26/01/23, 06:44:45, Closing database connection
-INFO:werkzeug:26/01/23, 06:44:45, 127.0.0.1 - - [26/Jan/2023 06:44:45] "GET /healthz HTTP/1.1" 200 -
-DEBUG:app:26/01/23, 06:45:15, Openning test database connection
-DEBUG:app:26/01/23, 06:45:15, Executing test query
-DEBUG:app:26/01/23, 06:45:15, Test query is successful
-DEBUG:app:26/01/23, 06:45:15, Closing database connection
-INFO:werkzeug:26/01/23, 06:45:15, 127.0.0.1 - - [26/Jan/2023 06:45:15] "GET /healthz HTTP/1.1" 200 -
-DEBUG:app:26/01/23, 06:45:45, Openning test database connection
-DEBUG:app:26/01/23, 06:45:45, Executing test query
-DEBUG:app:26/01/23, 06:45:45, Test query is successful
-DEBUG:app:26/01/23, 06:45:45, Closing database connection
-INFO:werkzeug:26/01/23, 06:45:45, 127.0.0.1 - - [26/Jan/2023 06:45:45] "GET /healthz HTTP/1.1" 200 -
-INFO:app:26/01/23, 06:46:04, Article "2020 CNCF Annual Report" retrieved!
-INFO:werkzeug:26/01/23, 06:46:04, 172.17.0.1 - - [26/Jan/2023 06:46:04] "GET /1 HTTP/1.1" 200 -
-INFO:werkzeug:26/01/23, 06:46:04, 172.17.0.1 - - [26/Jan/2023 06:46:04] "GET /static/css/main.css HTTP/1.1" 304 -
-INFO:app:26/01/23, 06:46:07, About page retrieved!
-INFO:werkzeug:26/01/23, 06:46:07, 172.17.0.1 - - [26/Jan/2023 06:46:07] "GET /about HTTP/1.1" 200 -
-INFO:werkzeug:26/01/23, 06:46:07, 172.17.0.1 - - [26/Jan/2023 06:46:07] "GET /static/css/main.css HTTP/1.1" 304 -
-INFO:werkzeug:26/01/23, 06:46:10, 172.17.0.1 - - [26/Jan/2023 06:46:10] "GET /create HTTP/1.1" 200 -
-INFO:werkzeug:26/01/23, 06:46:10, 172.17.0.1 - - [26/Jan/2023 06:46:10] "GET /static/css/main.css HTTP/1.1" 304 -
-DEBUG:app:26/01/23, 06:46:15, Openning test database connection
-DEBUG:app:26/01/23, 06:46:15, Executing test query
-DEBUG:app:26/01/23, 06:46:15, Test query is successful
-DEBUG:app:26/01/23, 06:46:15, Closing database connection
-INFO:werkzeug:26/01/23, 06:46:15, 127.0.0.1 - - [26/Jan/2023 06:46:15] "GET /healthz HTTP/1.1" 200 -
-INFO:app:26/01/23, 06:46:29, New Article "Argo CD" created!
-INFO:werkzeug:26/01/23, 06:46:29, 172.17.0.1 - - [26/Jan/2023 06:46:29] "POST /create HTTP/1.1" 302 -
-INFO:werkzeug:26/01/23, 06:46:29, 172.17.0.1 - - [26/Jan/2023 06:46:29] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:26/01/23, 06:46:29, 172.17.0.1 - - [26/Jan/2023 06:46:29] "GET /static/css/main.css HTTP/1.1" 304 -
-INFO:werkzeug:26/01/23, 06:46:34, 172.17.0.1 - - [26/Jan/2023 06:46:34] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:26/01/23, 06:46:34, 172.17.0.1 - - [26/Jan/2023 06:46:34] "GET /static/css/main.css HTTP/1.1" 304 -
-DEBUG:app:26/01/23, 06:46:45, Openning test database connection
-DEBUG:app:26/01/23, 06:46:45, Executing test query
-DEBUG:app:26/01/23, 06:46:45, Test query is successful
-DEBUG:app:26/01/23, 06:46:45, Closing database connection
-INFO:werkzeug:26/01/23, 06:46:45, 127.0.0.1 - - [26/Jan/2023 06:46:45] "GET /healthz HTTP/1.1" 200 -
-INFO:app:26/01/23, 06:46:48, Article "Argo CD" retrieved!
-INFO:werkzeug:26/01/23, 06:46:48, 172.17.0.1 - - [26/Jan/2023 06:46:48] "GET /7 HTTP/1.1" 200 -
-INFO:werkzeug:26/01/23, 06:46:48, 172.17.0.1 - - [26/Jan/2023 06:46:48] "GET /static/css/main.css HTTP/1.1" 304 -
-DEBUG:app:26/01/23, 06:47:01, db_connection_count: 0
-DEBUG:app:26/01/23, 06:47:01, post_count: 7
-DEBUG:app:26/01/23, 06:47:01, metrics: {"db_connection_count": 0, "post_count": 7}
-INFO:werkzeug:26/01/23, 06:47:01, 172.17.0.1 - - [26/Jan/2023 06:47:01] "GET /metrics HTTP/1.1" 200 -
-DEBUG:app:26/01/23, 06:47:16, Openning test database connection
-DEBUG:app:26/01/23, 06:47:16, Executing test query
-DEBUG:app:26/01/23, 06:47:16, Test query is successful
-DEBUG:app:26/01/23, 06:47:16, Closing database connection
-INFO:werkzeug:26/01/23, 06:47:16, 127.0.0.1 - - [26/Jan/2023 06:47:16] "GET /healthz HTTP/1.1" 200 -
-DEBUG:app:26/01/23, 06:47:32, db_connection_count: 0
-DEBUG:app:26/01/23, 06:47:32, post_count: 7
-DEBUG:app:26/01/23, 06:47:32, metrics: {"db_connection_count": 0, "post_count": 7}
-INFO:werkzeug:26/01/23, 06:47:32, 172.17.0.1 - - [26/Jan/2023 06:47:32] "GET /metrics HTTP/1.1" 200 -
-DEBUG:app:26/01/23, 06:47:38, Openning test database connection
-DEBUG:app:26/01/23, 06:47:38, Executing test query
-DEBUG:app:26/01/23, 06:47:38, Test query is successful
-DEBUG:app:26/01/23, 06:47:38, Closing database connection
-INFO:werkzeug:26/01/23, 06:47:38, 172.17.0.1 - - [26/Jan/2023 06:47:38] "GET /healthz HTTP/1.1" 200 -
-DEBUG:app:26/01/23, 06:47:46, Openning test database connection
-DEBUG:app:26/01/23, 06:47:46, Executing test query
-DEBUG:app:26/01/23, 06:47:46, Test query is successful
-DEBUG:app:26/01/23, 06:47:46, Closing database connection
-INFO:werkzeug:26/01/23, 06:47:46, 127.0.0.1 - - [26/Jan/2023 06:47:46] "GET /healthz HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:04:56,  * Running on http://192.168.1.4:3111/ (Press CTRL+C to quit)
+[INFO]:werkzeug:28/01/23, 16:05:06, 192.168.1.4 - - [28/Jan/2023 16:05:06] "GET / HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:05:06, 192.168.1.4 - - [28/Jan/2023 16:05:06] "GET /static/css/main.css HTTP/1.1" 304 -
+[INFO]:werkzeug:28/01/23, 16:05:07, 192.168.1.4 - - [28/Jan/2023 16:05:07] "GET / HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:05:07, 192.168.1.4 - - [28/Jan/2023 16:05:07] "GET /static/css/main.css HTTP/1.1" 304 -
+[INFO]:app:28/01/23, 16:05:32, Article "2020 CNCF Annual Report" retrieved!
+[INFO]:werkzeug:28/01/23, 16:05:32, 192.168.1.4 - - [28/Jan/2023 16:05:32] "GET /1 HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:05:32, 192.168.1.4 - - [28/Jan/2023 16:05:32] "GET /static/css/main.css HTTP/1.1" 304 -
+[INFO]:app:28/01/23, 16:05:36, Article "Azure DevOps" retrieved!
+[INFO]:werkzeug:28/01/23, 16:05:36, 192.168.1.4 - - [28/Jan/2023 16:05:36] "GET /9 HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:05:36, 192.168.1.4 - - [28/Jan/2023 16:05:36] "GET /static/css/main.css HTTP/1.1" 304 -
+[INFO]:app:28/01/23, 16:05:41, About page retrieved!
+[INFO]:werkzeug:28/01/23, 16:05:41, 192.168.1.4 - - [28/Jan/2023 16:05:41] "GET /about HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:05:41, 192.168.1.4 - - [28/Jan/2023 16:05:41] "GET /static/css/main.css HTTP/1.1" 304 -
+[DEBUG]:app:28/01/23, 16:05:44, "Darwin" os detected
+[DEBUG]:app:28/01/23, 16:05:44, collecting current open connections to database.db
+[DEBUG]:app:28/01/23, 16:05:44, open_db_connections_count: 0
+[DEBUG]:app:28/01/23, 16:05:44, post_count: 9
+[DEBUG]:app:28/01/23, 16:05:44, metrics: {"db_connection_count": 4, "open_db_connections_count": 0, "post_count": 9}
+[INFO]:werkzeug:28/01/23, 16:05:44, 192.168.1.4 - - [28/Jan/2023 16:05:44] "GET /metrics HTTP/1.1" 200 -
+[DEBUG]:app:28/01/23, 16:07:51, Opening test database connection
+[DEBUG]:app:28/01/23, 16:07:51, Executing test query
+[DEBUG]:app:28/01/23, 16:07:51, Test query is successful
+[DEBUG]:app:28/01/23, 16:07:51, Executing test query on "posts" table
+[DEBUG]:app:28/01/23, 16:07:51, Test query is successful
+[DEBUG]:app:28/01/23, 16:07:51, Closing database connection
+[INFO]:werkzeug:28/01/23, 16:07:51, 192.168.1.4 - - [28/Jan/2023 16:07:51] "GET /healthz HTTP/1.1" 200 -
+[INFO]:app:28/01/23, 16:07:57, Article with id "20" is not found!
+[INFO]:werkzeug:28/01/23, 16:07:57, 192.168.1.4 - - [28/Jan/2023 16:07:57] "GET /20 HTTP/1.1" 404 -
+[INFO]:werkzeug:28/01/23, 16:07:57, 192.168.1.4 - - [28/Jan/2023 16:07:57] "GET /static/css/main.css HTTP/1.1" 304 -
+[INFO]:werkzeug:28/01/23, 16:08:41, 192.168.1.4 - - [28/Jan/2023 16:08:41] "GET /create HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:08:41, 192.168.1.4 - - [28/Jan/2023 16:08:41] "GET /static/css/main.css HTTP/1.1" 304 -
+[INFO]:app:28/01/23, 16:09:12, New Article "GitHub Actions" created!
+[INFO]:werkzeug:28/01/23, 16:09:12, 192.168.1.4 - - [28/Jan/2023 16:09:12] "POST /create HTTP/1.1" 302 -
+[INFO]:werkzeug:28/01/23, 16:09:12, 192.168.1.4 - - [28/Jan/2023 16:09:12] "GET / HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:09:13, 192.168.1.4 - - [28/Jan/2023 16:09:13] "GET /static/css/main.css HTTP/1.1" 304 -
+[INFO]:app:28/01/23, 16:09:16, Article "GitHub Actions" retrieved!
+[INFO]:werkzeug:28/01/23, 16:09:16, 192.168.1.4 - - [28/Jan/2023 16:09:16] "GET /10 HTTP/1.1" 200 -
+[INFO]:werkzeug:28/01/23, 16:09:16, 192.168.1.4 - - [28/Jan/2023 16:09:16] "GET /static/css/main.css HTTP/1.1" 304 -
+[DEBUG]:app:28/01/23, 16:10:10, Opening test database connection
+[ERROR]:app:28/01/23, 16:10:10, Error: failed healthcheck, unable to open database file
+[INFO]:werkzeug:28/01/23, 16:10:10, 192.168.1.4 - - [28/Jan/2023 16:10:10] "GET /healthz HTTP/1.1" 500 -
+[DEBUG]:app:28/01/23, 16:10:14, Opening test database connection
+[ERROR]:app:28/01/23, 16:10:14, Error: failed healthcheck, unable to open database file
+[INFO]:werkzeug:28/01/23, 16:10:14, 192.168.1.4 - - [28/Jan/2023 16:10:14] "GET /healthz HTTP/1.1" 500 -
+[DEBUG]:app:28/01/23, 16:10:31, Opening test database connection
+[DEBUG]:app:28/01/23, 16:10:31, Executing test query
+[DEBUG]:app:28/01/23, 16:10:31, Test query is successful
+[DEBUG]:app:28/01/23, 16:10:31, Executing test query on "posts" table
+[ERROR]:app:28/01/23, 16:10:31, Error: failed healthcheck, no such table: posts
+[DEBUG]:app:28/01/23, 16:10:31, Closing database connection
+[INFO]:werkzeug:28/01/23, 16:10:31, 192.168.1.4 - - [28/Jan/2023 16:10:31] "GET /healthz HTTP/1.1" 500 -
 ```
 
 > :memo: Note: `/healthz` endpoint is being called periodically by Docker native HEALTHCHECK feature.
