@@ -116,6 +116,8 @@ def get_posts_count():
     Returns:
         int: returns the number of the posts rows in the posts table on success and -1 on failure
     """
+    result = dict()
+    cur = None
     try:
         cur = get_db_connection().cursor()
         result = cur.execute(
@@ -125,7 +127,8 @@ def get_posts_count():
         result['post_count'] = -1
         app.logger.error(f"Error: {e}")
     finally:
-        cur.close()
+        if cur:
+            cur.close()
         if db_conn_counter.count_healthchecks:
             db_conn_counter.increment()
     return result['post_count']
