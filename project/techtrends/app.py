@@ -166,6 +166,8 @@ def get_open_db_connections_count():
             open_db_connections_count = -1
         return open_db_connections_count
     else:
+        app.logger.debug(f"{platform.system()} detected")
+        app.logger.debug("ignoring current open connections metric")
         return None
 
 
