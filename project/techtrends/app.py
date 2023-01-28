@@ -81,6 +81,34 @@ class SingleLevel(logging.Filter):
             return (record.levelno == self.passlevel)
 
 
+class MaxLevel(logging.Filter):
+    """
+    A class to represent a maximum logging level filter.
+
+    ...
+
+    Attributes
+    ----------
+    maxlevel : int
+        maximum log level
+
+    Methods
+    -------
+    filter(record):
+        compares incoming logging records level no and accept it if record.levelno < self.maxlevel.
+    """
+
+    def __init__(self, maxlevel):
+        self.maxlevel = maxlevel
+
+    def filter(self, record):
+        """Filters incoming logging record.
+
+        Returns:
+            compares incoming logging records level no and accept it if record.levelno < self.maxlevel.
+        """
+        return record.levelno < self.maxlevel
+
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
